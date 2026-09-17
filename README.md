@@ -1,798 +1,399 @@
-# \# Laravel REST API + Vue Starter
+# Laravel REST API + Vue Starter
 
-# 
+Egyszerű, újrahasználható full-stack starter repository Laravel és Vue projektekhez.
 
-# Egyszerű, újrahasználható full-stack starter repository Laravel és Vue projektekhez.
+A repository két egymástól független részből áll:
 
-# 
+- **`backend_laravel`** — Laravel REST API + Scribe API dokumentáció
+- **`frontend_vue`** — Vue + Axios + Tailwind CSS
 
-# A repository két egymástól független részből áll:
+A backend és a frontend **külön-külön is használható**, nem szükséges őket együtt alkalmazni.
 
-# 
+---
 
-# \- \*\*`backend\_laravel`\*\* — Laravel REST API + Scribe API dokumentáció
+## Projektstruktúra
 
-# \- \*\*`frontend\_vue`\*\* — Vue + Axios + Tailwind CSS
+```text
+.
+├── backend_laravel/
+│   ├── app/
+│   ├── bootstrap/
+│   ├── config/
+│   ├── database/
+│   ├── public/
+│   ├── resources/
+│   ├── routes/
+│   ├── storage/
+│   ├── tests/
+│   ├── artisan
+│   ├── composer.json
+│   └── ...
+│
+├── frontend_vue/
+│   ├── public/
+│   ├── src/
+│   ├── index.html
+│   ├── package.json
+│   ├── vite.config.ts
+│   └── ...
+│
+└── README.md
+```
 
-# 
+---
 
-# A backend és a frontend \*\*külön-külön is használható\*\*, nem szükséges őket együtt alkalmazni.
+# Backend — Laravel REST API
 
-# 
+A `backend_laravel` egy Laravel alapú backend starter, amely REST API-k készítésére van előkészítve.
 
-# \---
+### Tartalmazza
 
-# 
+- Laravel
+- REST API routing
+- Scribe API dokumentáció
+- Laravel migrations
+- Validation / Form Requests támogatás
+- API Resources támogatás
+- PHPUnit tesztelési környezet
 
-# \## Projektstruktúra
+## Telepítés
 
-# 
+```bash
+cd backend_laravel
+composer install
+```
 
-# ```text
+Hozd létre a saját `.env` fájlodat:
 
-# .
+```bash
+cp .env.example .env
+```
 
-# ├── backend\_laravel/
+Windows CMD esetén:
 
-# │   ├── app/
+```cmd
+copy .env.example .env
+```
 
-# │   ├── bootstrap/
+Generáld le az application key-t:
 
-# │   ├── config/
+```bash
+php artisan key:generate
+```
 
-# │   ├── database/
+Állítsd be az adatbázis-kapcsolatot a `.env` fájlban, majd:
 
-# │   ├── public/
+```bash
+php artisan migrate
+```
 
-# │   ├── resources/
+## Backend indítása
 
-# │   ├── routes/
+```bash
+php artisan serve
+```
 
-# │   ├── storage/
+Alapértelmezetten:
 
-# │   ├── tests/
+```text
+http://127.0.0.1:8000
+```
 
-# │   ├── artisan
+Az API route-ok:
 
-# │   ├── composer.json
+```text
+backend_laravel/routes/api.php
+```
 
-# │   └── ...
+---
 
-# │
+## Scribe API dokumentáció
 
-# ├── frontend\_vue/
+A projekt Scribe-bal dokumentálja a REST API végpontokat.
 
-# │   ├── public/
+Dokumentáció generálása:
 
-# │   ├── src/
+```bash
+php artisan scribe:generate
+```
 
-# │   ├── index.html
+A pontos dokumentációs URL a Scribe konfigurációjától függ.
 
-# │   ├── package.json
+A konfiguráció itt található:
 
-# │   ├── vite.config.ts
+```text
+backend_laravel/config/scribe.php
+```
 
-# │   └── ...
+Új vagy módosított API endpointok után érdemes újragenerálni a dokumentációt:
 
-# │
+```bash
+php artisan scribe:generate
+```
 
-# └── README.md
+---
 
-# ```
+# Frontend — Vue
 
-# 
+A `frontend_vue` egy különálló Vue frontend starter.
 
-# \---
+### Tartalmazza
 
-# 
+- Vue
+- Vite
+- Axios
+- Tailwind CSS
+- TypeScript támogatás
 
-# \# Backend — Laravel REST API
+## Telepítés
 
-# 
+```bash
+cd frontend_vue
+npm install
+```
 
-# A `backend\_laravel` egy Laravel alapú backend starter, amely REST API-k készítésére van előkészítve.
+## Frontend indítása
 
-# 
+```bash
+npm run dev
+```
 
-# \### Tartalmazza
+A Vite alapértelmezetten általában:
 
-# 
+```text
+http://localhost:5173
+```
 
-# \- Laravel
+címen indítja el a fejlesztői szervert.
 
-# \- REST API routing
+---
 
-# \- Scribe API dokumentáció
+## Axios
 
-# \- Laravel migrations
+Az Axios használható a Laravel vagy bármilyen más REST API elérésére.
 
-# \- Validation / Form Requests támogatás
+Példa:
 
-# \- API Resources támogatás
+```ts
+import axios from 'axios'
 
-# \- PHPUnit tesztelési környezet
+const api = axios.create({
+    baseURL: 'http://127.0.0.1:8000/api',
+    headers: {
+        Accept: 'application/json',
+    },
+})
 
-# 
+export default api
+```
 
-# \## Telepítés
+Éles projektnél az API URL-t célszerű environment változóként megadni.
 
-# 
+Például:
 
-# ```bash
+```env
+VITE_API_URL=http://127.0.0.1:8000/api
+```
 
-# cd backend\_laravel
+Használata:
 
-# composer install
+```ts
+const api = axios.create({
+    baseURL: import.meta.env.VITE_API_URL,
+})
+```
 
-# ```
+---
 
-# 
+# Használat
 
-# Hozd létre a saját `.env` fájlodat:
+A repository háromféleképpen használható.
 
-# 
+### Csak Laravel backend
 
-# ```bash
+Csak a következő mappára van szükség:
 
-# cp .env.example .env
+```text
+backend_laravel/
+```
 
-# ```
+Használható például:
 
-# 
+- REST API backendként
+- mobilalkalmazás backendjeként
+- külön frontenddel
+- külső API klienssel
+- microservice-ként
 
-# Windows CMD esetén:
+---
 
-# 
+### Csak Vue frontend
 
-# ```cmd
+Csak a következő mappára van szükség:
 
-# copy .env.example .env
+```text
+frontend_vue/
+```
 
-# ```
+A frontend bármilyen REST API-hoz csatlakoztatható Axios segítségével.
 
-# 
+---
 
-# Generáld le az application key-t:
+### Laravel + Vue
 
-# 
+A két projekt együtt is használható:
 
-# ```bash
+```text
+Vue
+  ↓
+Axios
+  ↓
+Laravel REST API
+  ↓
+Database
+```
 
-# php artisan key:generate
+Fejlesztés közben például:
 
-# ```
+```text
+Frontend:
+http://localhost:5173
 
-# 
+Backend:
+http://127.0.0.1:8000
 
-# Állítsd be az adatbázis-kapcsolatot a `.env` fájlban, majd:
+API:
+http://127.0.0.1:8000/api
+```
 
-# 
+---
 
-# ```bash
+# Production build
 
-# php artisan migrate
+## Vue
 
-# ```
+Production build készítése:
 
-# 
+```bash
+cd frontend_vue
+npm run build
+```
 
-# \## Backend indítása
+A build eredménye:
 
-# 
+```text
+frontend_vue/dist/
+```
 
-# ```bash
+## Laravel
 
-# php artisan serve
+Production környezetben a Laravel optimalizálható:
 
-# ```
+```bash
+php artisan optimize
+```
 
-# 
+Cache törlése:
 
-# Alapértelmezetten:
+```bash
+php artisan optimize:clear
+```
 
-# 
+---
 
-# ```text
+# Git
 
-# http://127.0.0.1:8000
+Az alábbi generált vagy érzékeny fájlokat nem szabad Git repositoryba commitolni.
 
-# ```
+Laravel:
 
-# 
+```text
+backend_laravel/.env
+backend_laravel/vendor/
+```
 
-# Az API route-ok:
+Vue:
 
-# 
+```text
+frontend_vue/.env
+frontend_vue/node_modules/
+frontend_vue/dist/
+```
 
-# ```text
+A következő fájlokat viszont érdemes commitolni:
 
-# backend\_laravel/routes/api.php
+```text
+backend_laravel/.env.example
+backend_laravel/composer.lock
 
-# ```
+frontend_vue/package-lock.json
+```
 
-# 
+---
 
-# \---
+# Követelmények
 
-# 
+### Laravel backend
 
-# \## Scribe API dokumentáció
+- PHP
+- Composer
+- Laravel által támogatott adatbázis
 
-# 
+### Vue frontend
 
-# A projekt Scribe-bal dokumentálja a REST API végpontokat.
+- Node.js
+- npm
 
-# 
+---
 
-# Dokumentáció generálása:
+# Quick Start
 
-# 
+## Backend
 
-# ```bash
+```bash
+cd backend_laravel
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate
+php artisan serve
+```
 
-# php artisan scribe:generate
+## Frontend
 
-# ```
+```bash
+cd frontend_vue
+npm install
+npm run dev
+```
 
-# 
+---
 
-# A pontos dokumentációs URL a Scribe konfigurációjától függ.
+## Tech Stack
 
-# 
+**Backend**
 
-# A konfiguráció itt található:
+```text
+Laravel
+REST API
+Scribe
+Composer
+```
 
-# 
+**Frontend**
 
-# ```text
+```text
+Vue
+Vite
+Axios
+Tailwind CSS
+TypeScript
+```
 
-# backend\_laravel/config/scribe.php
+---
 
-# ```
+## Megjegyzés
 
-# 
+A két projekt nincs szorosan összekötve egymással.
 
-# Új vagy módosított API endpointok után érdemes újragenerálni a dokumentációt:
-
-# 
-
-# ```bash
-
-# php artisan scribe:generate
-
-# ```
-
-# 
-
-# \---
-
-# 
-
-# \# Frontend — Vue
-
-# 
-
-# A `frontend\_vue` egy különálló Vue frontend starter.
-
-# 
-
-# \### Tartalmazza
-
-# 
-
-# \- Vue
-
-# \- Vite
-
-# \- Axios
-
-# \- Tailwind CSS
-
-# \- TypeScript támogatás
-
-# 
-
-# \## Telepítés
-
-# 
-
-# ```bash
-
-# cd frontend\_vue
-
-# npm install
-
-# ```
-
-# 
-
-# \## Frontend indítása
-
-# 
-
-# ```bash
-
-# npm run dev
-
-# ```
-
-# 
-
-# A Vite alapértelmezetten általában:
-
-# 
-
-# ```text
-
-# http://localhost:5173
-
-# ```
-
-# 
-
-# címen indítja el a fejlesztői szervert.
-
-# 
-
-# \---
-
-# 
-
-# \## Axios
-
-# 
-
-# Az Axios használható a Laravel vagy bármilyen más REST API elérésére.
-
-# 
-
-# Példa:
-
-# 
-
-# ```ts
-
-# import axios from 'axios'
-
-# 
-
-# const api = axios.create({
-
-# &#x20;   baseURL: 'http://127.0.0.1:8000/api',
-
-# &#x20;   headers: {
-
-# &#x20;       Accept: 'application/json',
-
-# &#x20;   },
-
-# })
-
-# 
-
-# export default api
-
-# ```
-
-# 
-
-# Éles projektnél az API URL-t célszerű environment változóként megadni.
-
-# 
-
-# Például:
-
-# 
-
-# ```env
-
-# VITE\_API\_URL=http://127.0.0.1:8000/api
-
-# ```
-
-# 
-
-# Használata:
-
-# 
-
-# ```ts
-
-# const api = axios.create({
-
-# &#x20;   baseURL: import.meta.env.VITE\_API\_URL,
-
-# })
-
-# ```
-
-# 
-
-# \---
-
-# 
-
-# \# Használat
-
-# 
-
-# A repository háromféleképpen használható.
-
-# 
-
-# \### Csak Laravel backend
-
-# 
-
-# Csak a következő mappára van szükség:
-
-# 
-
-# ```text
-
-# backend\_laravel/
-
-# ```
-
-# 
-
-# Használható például:
-
-# 
-
-# \- REST API backendként
-
-# \- mobilalkalmazás backendjeként
-
-# \- külön frontenddel
-
-# \- külső API klienssel
-
-# \- microservice-ként
-
-# 
-
-# \---
-
-# 
-
-# \### Csak Vue frontend
-
-# 
-
-# Csak a következő mappára van szükség:
-
-# 
-
-# ```text
-
-# frontend\_vue/
-
-# ```
-
-# 
-
-# A frontend bármilyen REST API-hoz csatlakoztatható Axios segítségével.
-
-# 
-
-# \---
-
-# 
-
-# \### Laravel + Vue
-
-# 
-
-# A két projekt együtt is használható:
-
-# 
-
-# ```text
-
-# Vue
-
-# &#x20; ↓
-
-# Axios
-
-# &#x20; ↓
-
-# Laravel REST API
-
-# &#x20; ↓
-
-# Database
-
-# ```
-
-# 
-
-# Fejlesztés közben például:
-
-# 
-
-# ```text
-
-# Frontend:
-
-# http://localhost:5173
-
-# 
-
-# Backend:
-
-# http://127.0.0.1:8000
-
-# 
-
-# API:
-
-# http://127.0.0.1:8000/api
-
-# ```
-
-# 
-
-# \---
-
-# 
-
-# \# Production build
-
-# 
-
-# \## Vue
-
-# 
-
-# Production build készítése:
-
-# 
-
-# ```bash
-
-# cd frontend\_vue
-
-# npm run build
-
-# ```
-
-# 
-
-# A build eredménye:
-
-# 
-
-# ```text
-
-# frontend\_vue/dist/
-
-# ```
-
-# 
-
-# \## Laravel
-
-# 
-
-# Production környezetben a Laravel optimalizálható:
-
-# 
-
-# ```bash
-
-# php artisan optimize
-
-# ```
-
-# 
-
-# Cache törlése:
-
-# 
-
-# ```bash
-
-# php artisan optimize:clear
-
-# ```
-
-# 
-
-# \---
-
-# 
-
-# \# Git
-
-# 
-
-# Az alábbi generált vagy érzékeny fájlokat nem szabad Git repositoryba commitolni.
-
-# 
-
-# Laravel:
-
-# 
-
-# ```text
-
-# backend\_laravel/.env
-
-# backend\_laravel/vendor/
-
-# ```
-
-# 
-
-# Vue:
-
-# 
-
-# ```text
-
-# frontend\_vue/.env
-
-# frontend\_vue/node\_modules/
-
-# frontend\_vue/dist/
-
-# ```
-
-# 
-
-# A következő fájlokat viszont érdemes commitolni:
-
-# 
-
-# ```text
-
-# backend\_laravel/.env.example
-
-# backend\_laravel/composer.lock
-
-# 
-
-# frontend\_vue/package-lock.json
-
-# ```
-
-# 
-
-# \---
-
-# 
-
-# \# Követelmények
-
-# 
-
-# \### Laravel backend
-
-# 
-
-# \- PHP
-
-# \- Composer
-
-# \- Laravel által támogatott adatbázis
-
-# 
-
-# \### Vue frontend
-
-# 
-
-# \- Node.js
-
-# \- npm
-
-# 
-
-# \---
-
-# 
-
-# \# Quick Start
-
-# 
-
-# \## Backend
-
-# 
-
-# ```bash
-
-# cd backend\_laravel
-
-# composer install
-
-# cp .env.example .env
-
-# php artisan key:generate
-
-# php artisan migrate
-
-# php artisan serve
-
-# ```
-
-# 
-
-# \## Frontend
-
-# 
-
-# ```bash
-
-# cd frontend\_vue
-
-# npm install
-
-# npm run dev
-
-# ```
-
-# 
-
-# \---
-
-# 
-
-# \## Tech Stack
-
-# 
-
-# \*\*Backend\*\*
-
-# 
-
-# ```text
-
-# Laravel
-
-# REST API
-
-# Scribe
-
-# Composer
-
-# ```
-
-# 
-
-# \*\*Frontend\*\*
-
-# 
-
-# ```text
-
-# Vue
-
-# Vite
-
-# Axios
-
-# Tailwind CSS
-
-# TypeScript
-
-# ```
-
-# 
-
-# \---
-
-# 
-
-# \## Megjegyzés
-
-# 
-
-# A két projekt nincs szorosan összekötve egymással.
-
-# 
-
-# A `backend\_laravel` és a `frontend\_vue` önálló starterként is használható, ezért egy új projekt indításakor csak azt a részt kell megtartani, amelyre szükség van.
-
+A `backend_laravel` és a `frontend_vue` önálló starterként is használható, ezért egy új projekt indításakor csak azt a részt kell megtartani, amelyre szükség van.

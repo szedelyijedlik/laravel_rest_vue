@@ -54,7 +54,7 @@ A `backend_laravel` egy Laravel alapú backend starter, amely REST API-k készí
 - Laravel migrations
 - Validation / Form Requests támogatás
 - API Resources támogatás
-- PHPUnit tesztelési környezet
+- Pest tesztelési környezet
 
 ## Telepítés
 
